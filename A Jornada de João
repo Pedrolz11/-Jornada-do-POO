@@ -1,0 +1,92 @@
+using System;
+using System.Collections.Generic;
+
+// OBJETO: o primeiro carro físico produzido a partir da classe CarroJoao
+CarroJoao carro = new CarroJoao();
+
+// ENCAPSULAMENTO: o motorista só usa a interface simples (Ligar)
+carro.Ligar();
+
+// HERANÇA: variantes derivadas de CarroJoao
+CarroJoao sports = new CarroJoaoSports();
+CarroJoao suv = new CarroJoaoSUV();
+CarroJoao eco = new CarroJoaoEco();
+
+// POLIMORFISMO: todos são Veiculo e têm Mover(), cada um do seu jeito
+List<Veiculo> frota = new List<Veiculo>
+{
+    carro, sports, suv, eco,
+    new OnibusJoao(), new CaminhaoJoao(), new MotoJoao()
+};
+
+foreach (Veiculo v in frota)
+{
+    v.Mover();
+}
+
+// ABSTRAÇÃO: o evento de lançamento mostra só o que importa ao cliente
+Console.WriteLine(carro.Anunciar());
+
+
+// Todo veículo de João possui Mover(), mas cada tipo implementa à sua maneira
+abstract class Veiculo
+{
+    public abstract void Mover();
+}
+
+// CLASSE: o "projeto" do carro (rodas, motor, assentos, movimento)
+class CarroJoao : Veiculo
+{
+    private int rodas = 4;           // detalhes internos escondidos
+    private int assentos = 5;
+    private bool motorLigado = false;
+
+    public void Ligar()
+    {
+        motorLigado = true;
+        Console.WriteLine("Carro ligado.");
+    }
+
+    public override void Mover()
+    {
+        Console.WriteLine($"CarroJoao anda com {rodas} rodas e {assentos} assentos.");
+    }
+
+    // ABSTRAÇÃO: apenas as características relevantes
+    public string Anunciar()
+    {
+        return "CarroJoao: ótima economia de combustível, amplo espaço e segurança!";
+    }
+}
+
+// HERANÇA: herdam de CarroJoao e mudam o que for diferente
+class CarroJoaoSports : CarroJoao
+{
+    public override void Mover() => Console.WriteLine("CarroJoaoSports: motor potente, design esportivo!");
+}
+
+class CarroJoaoSUV : CarroJoao
+{
+    public override void Mover() => Console.WriteLine("CarroJoaoSUV: alto e com grande capacidade de carga.");
+}
+
+class CarroJoaoEco : CarroJoao
+{
+    public override void Mover() => Console.WriteLine("CarroJoaoEco: propulsão elétrica e silenciosa.");
+}
+
+// POLIMORFISMO: outros veículos, mesmo método, comportamentos diferentes
+class OnibusJoao : Veiculo
+{
+    public override void Mover() => Console.WriteLine("OnibusJoao: segue a rota parando nos pontos.");
+}
+
+class CaminhaoJoao : Veiculo
+{
+    public override void Mover() => Console.WriteLine("CaminhaoJoao: avança pesado transportando carga.");
+}
+
+class MotoJoao : Veiculo
+{
+    public override void Mover() => Console.WriteLine("MotoJoao: ágil sobre duas rodas.");
+}
